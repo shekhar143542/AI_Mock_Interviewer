@@ -10,7 +10,9 @@ import {
   FileText,
   User,
   LogOut,
+  PlusCircle, // ← Add this
 } from 'lucide-react'
+
 import React, { ReactNode } from 'react'
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
@@ -59,6 +61,13 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
             <Link href="/profile" className="flex items-center gap-3 hover:text-white transition duration-200">
               <User size={18} /> Profile
             </Link>
+
+            <Link href="/interview" className="mt-2">
+  <button className="w-full py-2 px-4 flex items-center cursor-pointer justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm font-medium transition">
+    <PlusCircle size={16} /> Create Interview
+  </button>
+</Link>
+
 
             {/* Sign out button inside nav */}
             <button

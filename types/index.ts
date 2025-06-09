@@ -11,6 +11,14 @@ interface SignUpParams {
   password: string;
 }
 
+interface AgentProps {
+  userName: string;
+  userId?: string;
+  interviewId?: string;
+  feedbackId?: string;
+  type: "generate" | "interview";
+  questions?: string[];
+}
 
 interface User {
   name: string;
