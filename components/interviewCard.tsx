@@ -115,7 +115,7 @@ interface Feedback {
 
 
 
-const InterviewCard = ({interviewId, userId, role, type, techstack,
+const InterviewCard = ({id, userId, role, type, techstack,
     createdAt}:InterviewCardProps) => {
   const feedback = null as Feedback | null;
   const normalizedType = /mix/gi.test(type) ? 'Mixed' : type;
@@ -168,7 +168,7 @@ const InterviewCard = ({interviewId, userId, role, type, techstack,
       <div className="px-6 pb-5 flex items-center justify-between">
         <DisplayTechIcons techStack={techstack} />
         <Link
-          href={feedback ? `/interviews/${interviewId}/feedback` : `/interview/${interviewId}`}
+          href={feedback ? `/interviews/${id}/feedback` : `/interview/${id}`}
         >
           <Button className="bg-purple-600 hover:bg-purple-500 cursor-pointer text-white font-semibold px-4 py-2 rounded-xl transition-colors duration-200">
             {feedback ? 'Check Feedback' : 'Start Interview'}

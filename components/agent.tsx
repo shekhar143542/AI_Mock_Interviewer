@@ -5,9 +5,17 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { vapi } from "@/lib/vapi.sdk";
+import { interviewer } from '@/constants';
 
 
-const Agent = ({userName, userId, type}: AgentProps) => {
+const Agent = ({
+  userName,
+  userId,
+  interviewId,
+  feedbackId,
+  type,
+  questions,
+}: AgentProps) => {
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -87,21 +95,40 @@ enum CallStatus {
 
   }, []);
 
+  const handleGenerateFeedback = async (messages:SavedMessage[]) => {
+    console.log('Generate feedback here.')
+    //TODO create a server action that generates a feedback
+    const {success, id} = {
+      success:true,
+      id: 'feedback-id'
+    }
+
+    if(success && id){
+      console.log('Feedback generated successfully')
+      router.push(`/interview/${interviewId}/feedback`)
+    }else{
+      console.log('Feedback generation failed')
+      router.push('/')
+    }
+
+  }
+
     useEffect( () => {
 
       if (callStatus === CallStatus.FINISHED) {
       if (type === "generate") {
         router.push("/");
+      }else{
+        handleGenerateFeedback(messages)
       }
     }
 
     }, [messages, callStatus, type, userId])
 
      const handleCall = async () => {
+    setCallStatus(CallStatus.CONNECTING);
 
-      setCallStatus(CallStatus.CONNECTING);
-if (type === "generate") {
-
+    if (type === "generate") {
       await vapi.start(
         undefined,
         undefined,
@@ -114,11 +141,21 @@ if (type === "generate") {
           },
         }
       );
+    } else {
+      let formattedQuestions = "";
+      if (questions) {
+        formattedQuestions = questions
+          .map((question) => `- ${question}`)
+          .join("\n");
+      }
 
+      await vapi.start(interviewer, {
+        variableValues: {
+          questions: formattedQuestions,
+        },
+      });
     }
-
-      
-    }
+  };
 
     
 
