@@ -6,7 +6,8 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from '@/constants';
-
+import { CreateFeedback } from '@/lib/actions/general.action';
+import {handleGenerateFeedback} from '@/lib/actions/feedback.action';
 
 const Agent = ({
   userName,
@@ -95,35 +96,58 @@ enum CallStatus {
 
   }, []);
 
-  const handleGenerateFeedback = async (messages:SavedMessage[]) => {
-    console.log('Generate feedback here.')
-    //TODO create a server action that generates a feedback
-    const {success, id} = {
-      success:true,
-      id: 'feedback-id'
-    }
 
-    if(success && id){
-      console.log('Feedback generated successfully')
-      router.push(`/interview/${interviewId}/feedback`)
-    }else{
-      console.log('Feedback generation failed')
-      router.push('/')
-    }
+  const generateFeedbackAndRedirect = async () => {
+  const { success, id } = await handleGenerateFeedback({
+  messages,
+  interviewId: interviewId!,
+  userId: userId!,
+  feedbackId,
+});
 
+  if (success && id) {
+    router.push(`/interview/${interviewId}/feedback`);
+  } else {
+    router.push('/');
   }
+};
+  
 
     useEffect( () => {
+
+    //   if (messages.length > 0) {
+    //   setLastMessage(messages[messages.length - 1].content);
+    // }
+
+  //   const handleGenerateFeedback = async (messages:SavedMessage[]) => {
+  //   console.log('Generate feedback here.')
+  //     const { success, feedbackId: id } = await CreateFeedback({
+  //       interviewId: interviewId!,
+  //       userId: userId!,
+  //       transcript: messages,
+  //       feedbackId,
+  //     });
+
+  //   if(success && id){
+  //     console.log('Feedback generated successfully')
+  //     router.push(`/interview/${interviewId}/feedback`)
+  //   }else{
+  //     console.log('Feedback generation failed')
+  //     router.push('/')
+  //   }
+
+  // }
 
       if (callStatus === CallStatus.FINISHED) {
       if (type === "generate") {
         router.push("/");
       }else{
-        handleGenerateFeedback(messages)
+        // handleGenerateFeedback(messages)
+         generateFeedbackAndRedirect();
       }
     }
 
-    }, [messages, callStatus, type, userId])
+    }, [messages, callStatus, feedbackId, interviewId, router, type, userId])
 
      const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
