@@ -53,7 +53,15 @@ const page = async () => {
           
             hasPastInterviews ? (
               userInterviews?.map((interview) => (
-                <InterviewCard {...interview} key={interview.id}/>
+                <InterviewCard
+                key={interview.id}
+                userId={user?.id}
+                id={interview.id}
+                role={interview.role}
+                type={interview.type}
+                techstack={interview.techstack}
+                createdAt={interview.createdAt}
+              />
               )
             )
           
@@ -72,7 +80,15 @@ const page = async () => {
           
            hasUpcomingInterviews ? (
               latestInterviews?.map((interview) => (
-                <InterviewCard {...interview} key={interview.id}/>
+                <InterviewCard
+                key={interview.id}
+                userId={user?.id}
+                id={interview.id}
+                role={interview.role}
+                type={interview.type}
+                techstack={interview.techstack}
+                createdAt={interview.createdAt}
+              />
               )
             )
           
