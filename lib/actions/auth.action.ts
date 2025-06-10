@@ -91,19 +91,15 @@ export async function setSessionCookie(idToken: string){
 }
 
 
+// Sign out user by clearing the session cookie
 export async function signOut() {
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
 
-  // Clear the session cookie
-  cookieStore.set('session', '', {
-    maxAge: 0,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    sameSite: 'lax',
-  })
+  cookieStore.delete("session");
 
-  return { success: true }
+  return{
+    success: true,
+  }
 }
 
 export async function getCurrentUser(): Promise<User | null> {
