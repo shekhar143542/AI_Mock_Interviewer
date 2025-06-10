@@ -4,9 +4,9 @@ import React from 'react'
 
 
 
-const DisplayTechIcons = async({techstack} : TechIconProps) => {
+const DisplayTechIcons = async({techStack} : TechIconProps) => {
 
-    const techIcons = await getTechLogos(techstack)
+    const techIcons = await getTechLogos(techStack)
 
   return (
     <div className='flex flex-row'>
